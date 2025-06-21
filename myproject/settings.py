@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_yasg',
     'api',
+    'lab2',
 ]
 
 REST_FRAMEWORK = {
