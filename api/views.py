@@ -9,8 +9,23 @@ from rest_framework.permissions import AllowAny
 
 class TodoListCreateAPIView(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request):
         todos = Todo.objects.all()
+
+        # Фильтрация по completed
+        completed = request.GET.get('completed')
+        if completed is not None:
+            val = completed.lower()
+            if val in ['true', '1', 'yes']:
+                todos = todos.filter(completed=True)
+            elif val in ['false', '0', 'no']:
+                todos = todos.filter(completed=False)
+        # Поиск по title (icontains)
+        search = request.GET.get('search')
+        if search:
+            todos = todos.filter(title__icontains=search)
+
         serializer = TodoSerializer(todos, many=True)
         return Response(serializer.data)
 
