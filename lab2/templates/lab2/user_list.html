@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Список пользователей</h2>
+  <ul>
+    {% for user in page_obj %}
+      <li>{{ user.username }} ({{ user.email }})</li>
+    {% empty %}
+      <li>Нет пользователей</li>
+    {% endfor %}
+  </ul>
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+    {% endif %}
+    <span>Стр. {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+    {% endif %}
+  </div>
+{% endblock %}

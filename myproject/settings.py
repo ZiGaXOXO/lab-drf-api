@@ -68,7 +68,10 @@ ROOT_URLCONF = 'myproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+                BASE_DIR / 'templates',
+                BASE_DIR / 'lab2' / 'templates',
+                ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,6 +82,8 @@ TEMPLATES = [
         },
     },
 ]
+
+LOGIN_URL = '/lab2/login/'
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 

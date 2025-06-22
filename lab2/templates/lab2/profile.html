@@ -1,0 +1,15 @@
+{# templates/lab2/profile.html #}
+{% extends "base.html" %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+  <h1>Профиль пользователя</h1>
+  <ul>
+    <li><strong>Имя пользователя:</strong> {{ user.username }}</li>
+    <li><strong>Электронная почта:</strong> {{ user.email }}</li>
+    <li><strong>Дата регистрации:</strong> {{ user.date_joined|date:"d.m.Y H:i" }}</li>
+    {# Добавьте любые другие поля профиля, если они есть #}
+  </ul>
+  <p><a href="{% url 'lab2:logout' %}">Выйти</a></p>
+{% endblock %}
