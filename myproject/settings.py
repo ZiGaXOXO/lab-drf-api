@@ -85,6 +85,8 @@ TEMPLATES = [
 
 LOGIN_URL = '/lab2/login/'
 
+SESSION_COOKIE_AGE = 1209600 # 2 недели
+
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
 

@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>Демонстрация сессий</h2>
+  <p>Вы посетили эту страницу {{ visits }} раз(а).</p>
+  <p><a href="{% url 'lab2:session_clear' %}">Очистить счётчик</a></p>
+{% endblock %}

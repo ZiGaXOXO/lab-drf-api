@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponse
 
 def register_view(request):
     if request.method == 'POST':
@@ -55,3 +56,20 @@ def user_list_view(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'lab2/user_list.html', {'page_obj': page_obj})
+
+@login_required
+def session_demo(request):
+    # Пример счётчика: сколько раз пользователь заходил на эту страницу
+    visits = request.session.get('visits', 0)
+    visits += 1
+    request.session['visits'] = visits
+
+    return render(request, 'lab2/session_demo.html', {'visits': visits})
+
+@login_required
+def session_clear(request):
+    try:
+        del request.session['visits']
+    except KeyError:
+        pass
+    return redirect('lab2:session_demo')
