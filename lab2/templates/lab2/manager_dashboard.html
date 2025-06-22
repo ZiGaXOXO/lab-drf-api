@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Панель менеджера{% endblock %}
+
+{% block content %}
+  <h1>Панель менеджера</h1>
+  <p>Добро пожаловать, {{ user.get_full_name|default:user.username }}!</p>
+  <p>Вы находитесь в разделе менеджера.</p>
+
+
+
+  <p><a href="{% url 'lab2:profile' %}">Вернуться к профилю</a></p>
+{% endblock %}

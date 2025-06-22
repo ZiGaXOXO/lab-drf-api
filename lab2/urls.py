@@ -14,4 +14,5 @@ urlpatterns = [
     path('comments/create/', views.comment_create_view, name='comment_create'),
     path('comments/', views.comment_list_view, name='comment_list'),
     path('upload/', views.upload_view, name='upload'),
+    path('manager/', views.manager_dashboard, name='manager_dashboard'),
 ]

@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import user_passes_test
 from api.models import Todo
 from .models import Comment
 from django.conf import settings
+from .decorators import group_required
 import os
 
 
@@ -140,3 +141,9 @@ def upload_view(request):
     else:
         form = FileUploadForm()
     return render(request, 'lab2/upload.html', {'form': form})
+
+
+@group_required('managers')
+def manager_dashboard(request):
+    # только пользователи из группы 'managers'
+    return render(request, 'lab2/manager_dashboard.html')
