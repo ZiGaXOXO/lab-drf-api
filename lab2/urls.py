@@ -11,4 +11,6 @@ urlpatterns = [
     path('session/', views.session_demo, name='session_demo'),
     path('session/clear/', views.session_clear, name='session_clear'),
     path('search/', views.search_view, name='search'),
+    path('comments/create/', views.comment_create_view, name='comment_create'),
+    path('comments/', views.comment_list_view, name='comment_list'),
 ]

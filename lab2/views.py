@@ -8,7 +8,8 @@ from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test
 from api.models import Todo
-from django.http import HttpResponse
+from .models import Comment
+
 
 def register_view(request):
     if request.method == 'POST':
@@ -88,3 +89,26 @@ def search_view(request):
     paginator = Paginator(todos, 10)
     page_obj = paginator.get_page(page)
     return render(request, 'lab2/search.html', {'form': form, 'page_obj': page_obj, 'q': q})
+
+
+@login_required
+def comment_create_view(request):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            cleaned_content = form.cleaned_data['content']
+            # Создаем комментарий
+            Comment.objects.create(
+                user=request.user,
+                content=cleaned_content
+            )
+            return redirect('lab2:comment_list')
+    else:
+        form = CommentForm()
+
+    return render(request, 'lab2/comment_form.html', {'form': form})
+
+
+def comment_list_view(request):
+    comments = Comment.objects.all().order_by('-created_at')
+    return render(request, 'lab2/comment_list.html', {'comments': comments})

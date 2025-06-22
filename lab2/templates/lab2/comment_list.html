@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Список комментариев</h2>
+<ul>
+    {% for comment in comments %}
+    <li>
+        <strong>{{ comment.user.username }}</strong>
+        <small>({{ comment.created_at }})</small>
+        <p>{{ comment.content|safe }}</p>
+    </li>
+    {% empty %}
+    <li>Комментариев пока нет</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'lab2:comment_create' %}">Добавить комментарий</a>
+{% endblock %}
