@@ -64,3 +64,29 @@ class CommentForm(forms.Form):
         """Очистка HTML-контента"""
         allowed_tags = ['b', 'i', 'u', 'strong', 'em', 'p', 'br']
         return bleach.clean(text, tags=allowed_tags, strip=True)
+
+
+class FileUploadForm(forms.Form):
+    file = forms.FileField(
+        label="Выберите файл",
+        help_text="Максимальный размер 5MB. Разрешены: JPEG, PNG"
+    )
+
+    def clean_file(self):
+        uploaded_file = self.cleaned_data['file']
+
+        # Проверка размера файла (5MB)
+        if uploaded_file.size > 5 * 1024 * 1024:
+            raise ValidationError("Слишком большой файл (>5MB)")
+
+        # Проверка типа файла
+        allowed_types = ['image/jpeg', 'image/png']
+        if uploaded_file.content_type not in allowed_types:
+            raise ValidationError("Только JPEG/PNG разрешены")
+
+        # Проверка расширения файла (дополнительная безопасность)
+        valid_extensions = ['.jpg', '.jpeg', '.png']
+        if not any(uploaded_file.name.lower().endswith(ext) for ext in valid_extensions):
+            raise ValidationError("Недопустимое расширение файла")
+
+        return uploaded_file

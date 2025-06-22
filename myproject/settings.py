@@ -87,6 +87,9 @@ LOGIN_URL = '/lab2/login/'
 
 SESSION_COOKIE_AGE = 1209600 # 2 недели
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
 

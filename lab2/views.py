@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test
 from api.models import Todo
 from .models import Comment
+from django.conf import settings
+import os
 
 
 def register_view(request):
@@ -112,3 +114,29 @@ def comment_create_view(request):
 def comment_list_view(request):
     comments = Comment.objects.all().order_by('-created_at')
     return render(request, 'lab2/comment_list.html', {'comments': comments})
+
+def clean_file(self):
+    f = self.cleaned_data['file']
+    if f.size > 5*1024*1024:
+        raise ValidationError("Слишком большой файл (>5MB)")
+    if not f.content_type in ['image/jpeg', 'image/png']:
+        raise ValidationError("Только JPEG/PNG разрешены")
+    return f
+
+@login_required
+def upload_view(request):
+    if request.method == 'POST':
+        form = FileUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_file = form.cleaned_data['file']
+            user_folder = os.path.join(settings.MEDIA_ROOT, 'uploads', request.user.username)
+            os.makedirs(user_folder, exist_ok=True)
+            filepath = os.path.join(user_folder, uploaded_file.name)
+            with open(filepath, 'wb+') as dest:
+                for chunk in uploaded_file.chunks():
+                    dest.write(chunk)
+            messages.success(request, "Файл загружен")
+            return redirect('lab2:upload')
+    else:
+        form = FileUploadForm()
+    return render(request, 'lab2/upload.html', {'form': form})
