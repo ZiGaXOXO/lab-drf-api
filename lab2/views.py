@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import RegistrationForm
+from .forms import *
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test
+from api.models import Todo
 from django.http import HttpResponse
 
 def register_view(request):
@@ -73,3 +74,17 @@ def session_clear(request):
     except KeyError:
         pass
     return redirect('lab2:session_demo')
+
+def search_view(request):
+    form = SearchForm(request.GET)
+    if not form.is_valid():
+        # вернуть ошибки в шаблон или JSON
+        return render(request, 'lab2/search.html', {'form': form})
+    q = form.cleaned_data['q']
+    page = form.cleaned_data.get('page') or 1
+    # Выполнить поиск, например, по модели Todo:
+
+    todos = Todo.objects.filter(title__icontains=q)
+    paginator = Paginator(todos, 10)
+    page_obj = paginator.get_page(page)
+    return render(request, 'lab2/search.html', {'form': form, 'page_obj': page_obj, 'q': q})

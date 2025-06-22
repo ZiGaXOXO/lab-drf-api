@@ -23,3 +23,7 @@ class RegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class SearchForm(forms.Form):
+    q = forms.CharField(required=True, max_length=100)
+    page = forms.IntegerField(required=False, min_value=1)
